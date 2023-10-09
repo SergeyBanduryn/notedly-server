@@ -8,8 +8,10 @@ const Query = {
   users: async (parent, args, { models }) =>
     await models.User.find().limit(100),
   me: async (parent, args, { models, user }) => {
-    let userFind = await models.User.findById(user.id);
-    return userFind;
+    if (user) {
+      let userFind = await models.User.findById(user.id);
+      return userFind;
+    }
   },
   notes: async (parent, { offset, limit }, { models }) =>
     await models.Note.find().skip(offset).limit(limit).sort({ _id: -1 }),

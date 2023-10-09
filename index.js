@@ -35,12 +35,10 @@ import { createComplexityLimitRule } from "graphql-validation-complexity";
 // app.use("/users", usersRouter);
 
 function getUser(token) {
-  if (token) {
-    try {
-      return jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      new Error("Error jwt.verify");
-    }
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    new Error("Error jwt.verify");
   }
 }
 
@@ -62,7 +60,10 @@ async function startApolloServer() {
     validationRules: [depthLimit(5), createComplexityLimitRule(1000)],
     context: ({ req }) => {
       const token = req.headers.authorization;
-      const user = getUser(token);
+
+      let user;
+      if (token) user = getUser(token);
+
       // console.log(req.headers);
       // if (user) console.log(user);
       return { models, user };
