@@ -29,7 +29,7 @@ const typeDefs = gql`
     note(id: ID!): Note!
     user(username: String!): User!
     users: [User!]!
-    me: User!
+    me: User
     totalNotes: Int!
   }
   type Mutation {
